@@ -37,10 +37,7 @@ public class HomeController {
     private String blog(){
         return "blog.html";
     }
-    @GetMapping("/cart")
-    private String cart(){
-        return "cart.html";
-    }
+
 
     @GetMapping("/checkout")
     private String checkout(){
