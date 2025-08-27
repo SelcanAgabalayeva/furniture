@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}">
+<head>
+    <title>Home</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <!-- food section -->
+
+    <section class="food_section layout_padding">
+        <div class="container">
+            <div class="heading_container heading_center">
+                <h2>Our Menu</h2>
+            </div>
+
+            <!-- Dynamic filter buttons -->
+            <ul class="filters_menu">
+                <li class="active" data-filter="*">All</li>
+                <li th:each="category : ${categories}"
+                    th:attr="data-filter='.cat__' + ${category.id}"
+                    th:text="${category.name}">
+                </li>
+            </ul>
+
+            <div class="filters-content">
+                <div class="row grid">
+                    <div th:each="menu : ${menus}"
+                         th:attr="class='col-sm-6 col-lg-4 all cat__' + ${menu.category.id}">
+                        <div class="box">
+                            <div>
+                                <div class="img-box">
+                                    <img th:src="@{${menu.imageUrl}}" alt="">
+                                </div>
+                                <div class="detail-box">
+                                    <h5 th:text="${menu.name}"></h5>
+                                    <p th:text="${menu.description}"></p>
+                                    <div class="options">
+                                        <h6 th:text="'$' + ${menu.price}"></h6>
+                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+
+    <!-- end food section -->
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(function () {
+        $(".filters_menu li").click(function () {
+            let value = $(this).attr("data-filter");
+            if (value === "*") {
+                $(".all").show("1000");
+            } else {
+                $(".all").not(value).hide("1000");
+                $(".all").filter(value).show("1000");
+            }
+            // Aktiv class dəyiş
+            $(".filters_menu li").removeClass("active");
+            $(this).addClass("active");
+        });
+    });
+</script>
+
+</body>
+</html>

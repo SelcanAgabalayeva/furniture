@@ -15,43 +15,44 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Autowired
     private CustomUserDetailService userDetailService;
-
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(c -> c.disable())
-                .authorizeHttpRequests(c -> c
-                        .requestMatchers("/cart/**").authenticated()
+                .authorizeHttpRequests((c) ->c
                         .anyRequest().permitAll()
                 )
-                .formLogin(form -> form
+                .formLogin((form) ->form
                         .loginPage("/login")
-                        .failureUrl("/login?error=true")
-                        .defaultSuccessUrl("/cart", true)
+                        .failureUrl("/login")
+                        .failureForwardUrl("/login")
                 )
-                .logout(log -> log
-                        .logoutSuccessUrl("/login?logout=true")
-                )
-                .exceptionHandling(exception -> exception
-                        .accessDeniedHandler((request, response, accessDeniedException) ->
+                .exceptionHandling(exception->exception
+                        .accessDeniedHandler(((request, response,accessDeniedException)->
                                 response.sendRedirect("/login")
-                        )
-                );
+                        )))
+                .logout((log)->log.logoutSuccessUrl("/login"));
+
+
 
         return http.build();
 
 
     }
-
     public void configure(AuthenticationManagerBuilder auth)
 
-            throws Exception {
+            throws Exception{
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
 
     }
+
 }
+

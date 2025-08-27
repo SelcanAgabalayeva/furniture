@@ -32,7 +32,7 @@
 
                 <!-- Start Column 1 -->
                 <div class="col-12 col-md-4 col-lg-3 mb-5" th:each="product:${products}">
-                    <a class="product-item" href="#">
+                    <a class="product-item" th:href="@{/product/{id}(id=${product.id})}">
                         <img th:src="${product.photoUrl}" class="img-fluid product-thumbnail">
                         <h3  th:text="${product.name}" class="product-title">Nordic Chair</h3>
                         <strong th:text="${product.price}" class="product-price">$50.00</strong>
